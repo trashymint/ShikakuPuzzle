@@ -9,20 +9,14 @@
   <body>
     <div class="app">
       <aside class="panel">
-        <h1>Shikaku 40×40 — Interfaz</h1>
+        <h1>Shikaku Puzzle</h1>
 
-        <div class="hint">
-          Click en una celda para seleccionarla. Escribe un número y presiona
-          <span class="kbd">Enter</span> para poner una pista. Para borrar usa
-          <span class="kbd">Backspace</span>/<span class="kbd">Delete</span>.
-        </div>
-
-        <h2>Edición</h2>
+        
+        <h2>Jugar</h2>
         <div class="row">
           <label for="clueValue">Valor (área)</label>
           <input id="clueValue" type="number" min="1" step="1" placeholder="ej: 12" />
           <button class="primary" id="btnSet">Poner</button>
-          <button class="danger" id="btnClear">Borrar</button>
         </div>
         <div class="row mt">
           <label>
@@ -46,12 +40,6 @@
           <button class="primary" id="btnImport">Importar</button>
           <button id="btnExport">Exportar</button>
           <button class="danger" id="btnReset">Reset</button>
-        </div>
-
-        <div class="footerNote">
-          Esta interfaz **no resuelve** el Shikaku: solo captura/visualiza pistas.
-          Si luego quieres pintar rectángulos (solución), se conecta fácil sobre el
-          mismo grid.
         </div>
       </aside>
 
@@ -243,7 +231,13 @@
       }
 
       // UI wiring
-      document.getElementById("btnSet").addEventListener("click", () => {
+      const btnSet = document.getElementById("btnSet");
+      const btnClear = document.getElementById("btnClear");
+      const btnReset = document.getElementById("btnReset");
+      const btnExport = document.getElementById("btnExport");
+      const btnImport = document.getElementById("btnImport");
+
+      btnSet?.addEventListener("click", () => {
         try {
           const v = Number(elClueValue.value);
           setClueAt(selected.r, selected.c, v);
@@ -253,19 +247,19 @@
         }
       });
 
-      document.getElementById("btnClear").addEventListener("click", () => {
+      btnClear?.addEventListener("click", () => {
         clearClueAt(selected.r, selected.c);
         setStatus(`Pista borrada en (${selected.r}, ${selected.c}).`);
       });
 
-      document.getElementById("btnReset").addEventListener("click", () => resetAll());
+      btnReset?.addEventListener("click", () => resetAll());
 
-      document.getElementById("btnExport").addEventListener("click", () => {
+      btnExport?.addEventListener("click", () => {
         elIoBox.value = exportText();
         setStatus("Exportado a la caja de texto.");
       });
 
-      document.getElementById("btnImport").addEventListener("click", () => {
+      btnImport?.addEventListener("click", () => {
         try {
           importText(elIoBox.value);
         } catch (e) {
