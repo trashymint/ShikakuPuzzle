@@ -1,0 +1,240 @@
+:root {
+  --cell: 18px;
+  --grid-line: #cfd6df;
+  --grid-line-bold: #9aa6b2;
+  --bg: #0b1220;
+  --panel: #0f1b2d;
+  --text: #e6edf3;
+  --muted: #9fb0c0;
+  --accent: #6ea8fe;
+  --danger: #ff6b6b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: linear-gradient(180deg, #09101c, #070b12);
+  color: var(--text);
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 16px;
+  padding: 16px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.panel {
+  background: rgba(15, 27, 45, 0.72);
+  border: 1px solid rgba(207, 214, 223, 0.12);
+  border-radius: 14px;
+  padding: 14px;
+  backdrop-filter: blur(10px);
+}
+
+.panel h1 {
+  font-size: 16px;
+  margin: 0 0 10px 0;
+  letter-spacing: 0.2px;
+}
+
+.panel h2 {
+  font-size: 12px;
+  margin: 14px 0 8px 0;
+  color: var(--muted);
+  font-weight: 650;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.row.mt {
+  margin-top: 10px;
+}
+
+.hint.mb {
+  margin-bottom: 8px;
+}
+
+label {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+input[type="number"],
+textarea,
+button,
+select {
+  border-radius: 10px;
+  border: 1px solid rgba(207, 214, 223, 0.16);
+  background: rgba(7, 14, 26, 0.75);
+  color: var(--text);
+  padding: 9px 10px;
+  font-size: 13px;
+  outline: none;
+}
+
+input[type="number"] {
+  width: 96px;
+}
+
+textarea {
+  width: 100%;
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.25;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 12px;
+}
+
+button {
+  cursor: pointer;
+  transition: transform 0.04s ease, border-color 0.15s ease,
+    background 0.15s ease;
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+button.primary {
+  border-color: rgba(110, 168, 254, 0.55);
+  background: rgba(110, 168, 254, 0.12);
+}
+
+button.danger {
+  border-color: rgba(255, 107, 107, 0.55);
+  background: rgba(255, 107, 107, 0.12);
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.35;
+}
+
+.kbd {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 7px;
+  border: 1px solid rgba(207, 214, 223, 0.16);
+  background: rgba(7, 14, 26, 0.65);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 11px;
+  color: #d7e3ef;
+}
+
+.boardWrap {
+  background: rgba(15, 27, 45, 0.6);
+  border: 1px solid rgba(207, 214, 223, 0.12);
+  border-radius: 14px;
+  padding: 14px;
+  overflow: auto;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.status {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.board {
+  --H: 40;
+  --W: 40;
+  display: grid;
+  grid-template-columns: repeat(var(--W), var(--cell));
+  grid-template-rows: repeat(var(--H), var(--cell));
+  width: calc(var(--W) * var(--cell));
+  height: calc(var(--H) * var(--cell));
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.cell {
+  width: var(--cell);
+  height: var(--cell);
+  display: grid;
+  place-items: center;
+  user-select: none;
+  font-size: 11px;
+  font-weight: 700;
+  color: #eaf1f8;
+  position: relative;
+  border-right: 1px solid rgba(207, 214, 223, 0.14);
+  border-bottom: 1px solid rgba(207, 214, 223, 0.14);
+}
+
+/* líneas más gruesas cada 5 (solo visual) */
+.cell.boldR {
+  border-bottom-color: rgba(154, 166, 178, 0.5);
+  border-bottom-width: 2px;
+}
+.cell.boldC {
+  border-right-color: rgba(154, 166, 178, 0.5);
+  border-right-width: 2px;
+}
+
+.cell.topLine {
+  border-top: 2px solid rgba(154, 166, 178, 0.5);
+}
+.cell.leftLine {
+  border-left: 2px solid rgba(154, 166, 178, 0.5);
+}
+
+.cell.selected {
+  outline: 2px solid rgba(110, 168, 254, 0.9);
+  outline-offset: -2px;
+  z-index: 2;
+}
+
+.cell.clue {
+  background: rgba(110, 168, 254, 0.16);
+  border-right-color: rgba(110, 168, 254, 0.22);
+  border-bottom-color: rgba(110, 168, 254, 0.22);
+}
+
+.cell .coord {
+  position: absolute;
+  top: 2px;
+  left: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(159, 176, 192, 0.7);
+  display: none;
+}
+
+.showCoords .cell .coord {
+  display: block;
+}
+
+.cell .val {
+  line-height: 1;
+}
+
+.footerNote {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
