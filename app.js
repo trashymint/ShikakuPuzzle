@@ -93,7 +93,6 @@ tablero.addEventListener("mouseup", (event) => {
 });
 
 function buildBoard(alto, ancho) {
-  const tablero = document.getElementById("board");
 
   rectangulos.forEach(r => r.div.remove());
   rectangulos.length = 0;
@@ -108,7 +107,7 @@ function buildBoard(alto, ancho) {
   tamañoCelda = Math.floor(Math.min(espacioAncho / ancho, espacioAlto / alto));
   tablero.style.setProperty("--cell", tamañoCelda + "px");
 
-  const boldLines = document.getElementById("toggleBold5")?.checked ?? true;
+  const lineasDemarcadas = document.getElementById("toggleBold5")?.checked ?? true;
 
   for (let i = 0; i < alto; i++) {
     for (let j = 0; j < ancho; j++) {
@@ -122,7 +121,7 @@ function buildBoard(alto, ancho) {
       if (j === 0)        celda.classList.add("leftLine");
       if (j === ancho - 1) celda.classList.add("rightLine");
 
-      if (boldLines) {
+      if (lineasDemarcadas) {
         if ((i + 1) % 5 === 0 && i !== alto - 1)  celda.classList.add("boldR");
         if ((j + 1) % 5 === 0 && j !== ancho - 1) celda.classList.add("boldC");
       }
