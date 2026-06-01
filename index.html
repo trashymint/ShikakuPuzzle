@@ -11,30 +11,35 @@
       <aside class="panel">
         <h1>Shikaku Puzzle</h1>
 
-        <h2>Jugar</h2>  
-        <h3>Generar Tablero</h3>
-        <p style="margin-bottom: 12px;">Dimensiones del tablero</p>
-        
-        <input type="number" id="boardWidth" placeholder="Ancho" min="1" max="40" />
-        <input type="number" id="boardHeight" placeholder="Alto" min="1" max="40" />
-        
-        <p id="mensajeError" style="color: red; font-size: 12px; margin-top: 12px;"></p>
+        <h2>Tablero</h2>
+        <p class="hint">Dimensiones (mín. 2, máx. 20)</p>
+        <div class="row" style="margin-top:8px;">
+          <input type="number" id="boardWidth"  placeholder="Ancho" min="2" max="20" />
+          <input type="number" id="boardHeight" placeholder="Alto"  min="2" max="20" />
+        </div>
+        <p id="mensajeError" style="color:#ff6b6b; font-size:12px; margin:8px 0 0;"></p>
+        <button class="primary wide" id="btnGenerateBoard" style="margin-top:10px;">Generar Tablero</button>
 
-        <button class="primary" id="btnGenerateBoard" style="margin-top: 12px;">Generar Tablero</button>
-
-        <div class="row mt" style="margin-top: 12px;">
+        <div class="row mt">
           <label>
             <input id="toggleBold5" type="checkbox" checked />
             Líneas cada 5
           </label>
         </div>
 
-        <button class="danger" id="btnReset" style="margin-top: 12px;">Resetear</button>
+        <h2>Puzzle</h2>
+        <div class="col-btns">
+          <button class="primary wide" id="btnGeneratePuzzle"> Generar Puzzle</button>
+          <button class="verify  wide" id="btnVerify"> Verificar</button>
+          <button class="accent  wide" id="btnSolve"> Resolver</button>
+          <button class="danger  wide" id="btnReset">Resetear</button>
+        </div>
+        <p id="status" class="hint" style="margin-top:10px;">Listo.</p>
 
         <h2>Cargar Tablero</h2>
-        <textarea id="boardData" placeholder="Datos del tablero"></textarea>
-        <button class="primary" id="btnLoadBoard" style="margin-top: 12px;">Cargar Tablero</button>
-      
+        <p class="hint">Formato: <span class="kbd">H W</span> luego <span class="kbd">r c area</span> por línea.</p>
+        <textarea id="boardData" placeholder="6 6&#10;0 0 4&#10;0 4 2&#10;..."></textarea>
+        <button class="primary wide" id="btnLoadBoard" style="margin-top:8px;">Cargar</button>
       </aside>
 
       <main class="boardWrap">

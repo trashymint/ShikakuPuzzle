@@ -183,3 +183,98 @@ button.danger {
   background: rgba(110, 168, 254, 0.18);
   border: 2px solid rgba(110, 168, 254, 0.9);
 }
+
+/*  Puzzle y Solver */
+:root {
+  --ok: #64dc8c;
+  --danger: #ff6b6b;
+}
+
+button.accent {
+  border-color: rgba(100,220,140,0.55);
+  background: rgba(100,220,140,0.10);
+  color: #a0f0c0;
+}
+
+button.wide {
+  width: 100%;
+}
+
+.row.mt { margin-top: 10px; }
+
+.hint {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0;
+}
+
+.algo-note {
+  background: rgba(110,168,254,0.06);
+  border: 1px solid rgba(110,168,254,0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+
+.kbd {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 6px;
+  border: 1px solid rgba(207,214,223,0.16);
+  background: rgba(7,14,26,0.65);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  font-size: 10px;
+  color: #d7e3ef;
+}
+
+.cell.clue-cell {
+  background: rgba(110,168,254,0.18);
+  color: #fff;
+  font-size: 13px;
+}
+
+button.accent {
+  border-color: rgba(100,220,140,0.55);
+  background: rgba(100,220,140,0.10);
+  color: #a0f0c0;
+}
+button.wide { width: 100%; }
+
+.col-btns { display: flex; flex-direction: column; gap: 6px; }
+.row.mt   { margin-top: 10px; }
+
+.hint {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0;
+}
+.algo-note {
+  background: rgba(110,168,254,0.06);
+  border: 1px solid rgba(110,168,254,0.15);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.kbd {
+  display: inline-block;
+  padding: 2px 5px;
+  border-radius: 6px;
+  border: 1px solid rgba(207,214,223,0.16);
+  background: rgba(7,14,26,0.65);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono","Courier New", monospace;
+  font-size: 10px;
+  color: #d7e3ef;
+}
+.cell.clue-cell {
+  background: rgba(110,168,254,0.18);
+  color: #fff;
+  font-size: 13px;
+}
+
+button.verify {
+  border-color: rgba(255,210,80,0.55);
+  background: rgba(255,210,80,0.10);
+  color: #ffe090;
+}
