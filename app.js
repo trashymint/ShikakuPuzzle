@@ -108,12 +108,25 @@ function buildBoard(alto, ancho) {
   tamañoCelda = Math.floor(Math.min(espacioAncho / ancho, espacioAlto / alto));
   tablero.style.setProperty("--cell", tamañoCelda + "px");
 
+  const boldLines = document.getElementById("toggleBold5")?.checked ?? true;
+
   for (let i = 0; i < alto; i++) {
     for (let j = 0; j < ancho; j++) {
       const celda = document.createElement("div");
       celda.className = "cell";
       celda.dataset.r = String(i);
       celda.dataset.c = String(j);
+
+      if (i === 0)        celda.classList.add("topLine");
+      if (i === alto - 1) celda.classList.add("bottomLine");
+      if (j === 0)        celda.classList.add("leftLine");
+      if (j === ancho - 1) celda.classList.add("rightLine");
+
+      if (boldLines) {
+        if ((i + 1) % 5 === 0 && i !== alto - 1)  celda.classList.add("boldR");
+        if ((j + 1) % 5 === 0 && j !== ancho - 1) celda.classList.add("boldC");
+      }
+
       tablero.appendChild(celda);
     }
   }
@@ -121,6 +134,12 @@ function buildBoard(alto, ancho) {
   tablero.appendChild(previewDiv);
   previewDiv.style.display = "none";
 }
+
+document.getElementById("toggleBold5")?.addEventListener("change", () => {
+  const alto  = document.getElementById("boardHeight").value;
+  const ancho = document.getElementById("boardWidth").value;
+  if (alto && ancho) buildBoard(alto, ancho);
+});
 
 document.getElementById("btnGenerateBoard").addEventListener("click", () => {
   const alto  = document.getElementById("boardHeight").value;

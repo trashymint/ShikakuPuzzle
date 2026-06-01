@@ -192,22 +192,17 @@ button.danger {
   border-bottom: 1px solid rgba(207, 214, 223, 0.14);
 }
 
-/* líneas más gruesas cada 5 (solo visual) */
 .cell.boldR {
-  border-bottom-color: rgba(154, 166, 178, 0.5);
-  border-bottom-width: 2px;
+  border-bottom: 2px solid rgba(180, 195, 210, 0.75);
 }
 .cell.boldC {
-  border-right-color: rgba(154, 166, 178, 0.5);
-  border-right-width: 2px;
+  border-right: 2px solid rgba(180, 195, 210, 0.75);
 }
 
-.cell.topLine {
-  border-top: 2px solid rgba(154, 166, 178, 0.5);
-}
-.cell.leftLine {
-  border-left: 2px solid rgba(154, 166, 178, 0.5);
-}
+.cell.topLine    { border-top:    3px solid rgba(210, 220, 230, 0.95); }
+.cell.bottomLine { border-bottom: 3px solid rgba(210, 220, 230, 0.95); }
+.cell.leftLine   { border-left:   3px solid rgba(210, 220, 230, 0.95); }
+.cell.rightLine  { border-right:  3px solid rgba(210, 220, 230, 0.95); }
 
 .rect-overlay {
   position: absolute;
