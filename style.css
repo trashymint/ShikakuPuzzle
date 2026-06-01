@@ -16,6 +16,7 @@
 
 body {
   margin: 0;
+  height: 100vh;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
     Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   background: linear-gradient(180deg, #09101c, #070b12);
@@ -27,8 +28,8 @@ body {
   grid-template-columns: 340px 1fr;
   gap: 16px;
   padding: 16px;
-  max-width: 1400px;
-  margin: 0 auto;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .panel {
@@ -144,7 +145,10 @@ button.danger {
   border: 1px solid rgba(207, 214, 223, 0.12);
   border-radius: 14px;
   padding: 14px;
-  overflow: auto;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .toolbar {
@@ -203,7 +207,12 @@ button.danger {
   border-left: 2px solid rgba(154, 166, 178, 0.5);
 }
 
+.cell.preview {
+  background: rgba(110, 168, 254, 0.15);
+}
+
 .cell.selected {
+  background: rgba(110, 168, 254, 0.3);
   outline: 2px solid rgba(110, 168, 254, 0.9);
   outline-offset: -2px;
   z-index: 2;

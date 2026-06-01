@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Shikaku 40×40 — Interfaz</title>
+    <title>Shikaku Puzzle</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -11,302 +11,31 @@
       <aside class="panel">
         <h1>Shikaku Puzzle</h1>
 
+        <h2>Jugar</h2>  
+        <h3>Generar Tablero</h3>
+        <p style="margin-bottom: 12px;">Dimensiones del tablero</p>
+        <input type="number" id="boardWidth" placeholder="Ancho" min="1" max="40" />
+        <input type="number" id="boardHeight" placeholder="Alto" min="1" max="40" />
         
-        <h2>Jugar</h2>
-        <div class="row">
-          <label for="clueValue">Valor (área)</label>
-          <input id="clueValue" type="number" min="1" step="1" placeholder="ej: 12" />
-          <button class="primary" id="btnSet">Poner</button>
-        </div>
-        <div class="row mt">
-          <label>
-            <input id="toggleCoords" type="checkbox" />
-            Mostrar coordenadas
-          </label>
+        <p id="mensajeError" style="color: red; font-size: 12px; margin-top: 12px;"></p>
+
+        <button class="primary" id="btnGenerateBoard" style="margin-top: 12px;">Generar Tablero</button>
+
+        <div class="row mt" style="margin-top: 12px;">
           <label>
             <input id="toggleBold5" type="checkbox" checked />
             Líneas cada 5
           </label>
         </div>
 
-        <h2>Importar / Exportar</h2>
-        <div class="hint mb">
-          Formato de texto (0-based):<br />
-          <span class="kbd">40 40</span> luego líneas <span class="kbd">r c area</span>.
-          También acepta la variante con <span class="kbd">N</span> en la 2ª línea.
-        </div>
-        <textarea id="ioBox" spellcheck="false" placeholder="40 40&#10;0 3 6&#10;..."></textarea>
-        <div class="row mt">
-          <button class="primary" id="btnImport">Importar</button>
-          <button id="btnExport">Exportar</button>
-          <button class="danger" id="btnReset">Reset</button>
-        </div>
+        <button class="danger" id="btnReset" style="margin-top: 12px;">Resetear</button>
       </aside>
 
       <main class="boardWrap">
-        <div class="toolbar">
-          <div class="status" id="status">Listo.</div>
-          <div class="status" id="selectedInfo">Selecciona una celda.</div>
-        </div>
         <div id="board" class="board" aria-label="tablero shikaku"></div>
       </main>
     </div>
 
-    <script>
-      const H = 40;
-      const W = 40;
-
-      /** @type {Map<string, number>} */
-      const clues = new Map(); // key: "r,c" -> area
-      let selected = { r: 0, c: 0 };
-
-      const elBoard = document.getElementById("board");
-      const elStatus = document.getElementById("status");
-      const elSelectedInfo = document.getElementById("selectedInfo");
-      const elClueValue = document.getElementById("clueValue");
-      const elIoBox = document.getElementById("ioBox");
-      const elToggleCoords = document.getElementById("toggleCoords");
-      const elToggleBold5 = document.getElementById("toggleBold5");
-
-      elBoard.style.setProperty("--H", String(H));
-      elBoard.style.setProperty("--W", String(W));
-
-      function keyOf(r, c) {
-        return `${r},${c}`;
-      }
-
-      function setStatus(msg, kind = "info") {
-        elStatus.textContent = msg;
-        elStatus.style.color = kind === "error" ? "var(--danger)" : "var(--muted)";
-      }
-
-      function updateSelectedInfo() {
-        const k = keyOf(selected.r, selected.c);
-        const v = clues.get(k);
-        elSelectedInfo.textContent =
-          v == null
-            ? `Seleccionada: (${selected.r}, ${selected.c}) — sin pista`
-            : `Seleccionada: (${selected.r}, ${selected.c}) — pista: ${v}`;
-      }
-
-      function renderCellState(cell, r, c) {
-        const k = keyOf(r, c);
-        const v = clues.get(k);
-        cell.classList.toggle("clue", v != null);
-        cell.querySelector(".val").textContent = v == null ? "" : String(v);
-      }
-
-      function renderSelection() {
-        document.querySelectorAll(".cell.selected").forEach((n) => n.classList.remove("selected"));
-        const sel = document.querySelector(`.cell[data-r="${selected.r}"][data-c="${selected.c}"]`);
-        if (sel) sel.classList.add("selected");
-        updateSelectedInfo();
-      }
-
-      function buildBoard() {
-        elBoard.innerHTML = "";
-        for (let r = 0; r < H; r++) {
-          for (let c = 0; c < W; c++) {
-            const cell = document.createElement("div");
-            cell.className = "cell";
-            cell.dataset.r = String(r);
-            cell.dataset.c = String(c);
-
-            if (r === 0) cell.classList.add("topLine");
-            if (c === 0) cell.classList.add("leftLine");
-
-            const coord = document.createElement("div");
-            coord.className = "coord";
-            coord.textContent = `${r},${c}`;
-            const val = document.createElement("div");
-            val.className = "val";
-
-            cell.appendChild(coord);
-            cell.appendChild(val);
-
-            cell.addEventListener("mousedown", (ev) => {
-              ev.preventDefault();
-              selected = { r, c };
-              renderSelection();
-            });
-
-            elBoard.appendChild(cell);
-            renderCellState(cell, r, c);
-          }
-        }
-        applyBoldLines();
-        renderSelection();
-      }
-
-      function applyBoldLines() {
-        const enabled = elToggleBold5.checked;
-        document.querySelectorAll(".cell").forEach((cell) => {
-          const r = Number(cell.dataset.r);
-          const c = Number(cell.dataset.c);
-          const boldR = enabled && (r + 1) % 5 === 0 && r !== H - 1;
-          const boldC = enabled && (c + 1) % 5 === 0 && c !== W - 1;
-          cell.classList.toggle("boldR", boldR);
-          cell.classList.toggle("boldC", boldC);
-        });
-      }
-
-      function setClueAt(r, c, area) {
-        if (!Number.isInteger(area) || area <= 0) throw new Error("El área debe ser un entero > 0");
-        const k = keyOf(r, c);
-        clues.set(k, area);
-        const cell = document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
-        if (cell) renderCellState(cell, r, c);
-        updateSelectedInfo();
-      }
-
-      function clearClueAt(r, c) {
-        const k = keyOf(r, c);
-        clues.delete(k);
-        const cell = document.querySelector(`.cell[data-r="${r}"][data-c="${c}"]`);
-        if (cell) renderCellState(cell, r, c);
-        updateSelectedInfo();
-      }
-
-      function resetAll() {
-        clues.clear();
-        buildBoard();
-        setStatus("Reset completo.");
-      }
-
-      function exportText() {
-        // Siempre exportamos como "40 40" + triples (sin N).
-        const lines = ["40 40"];
-        const entries = Array.from(clues.entries())
-          .map(([k, v]) => {
-            const [r, c] = k.split(",").map(Number);
-            return { r, c, v };
-          })
-          .sort((a, b) => (a.r - b.r) || (a.c - b.c));
-        for (const e of entries) lines.push(`${e.r} ${e.c} ${e.v}`);
-        return lines.join("\n");
-      }
-
-      function importText(text) {
-        const rawLines = text.split(/\r?\n/);
-        const toks = [];
-        for (const raw of rawLines) {
-          const line = raw.trim();
-          if (!line || line.startsWith("#")) continue;
-          toks.push(...line.split(/\s+/));
-        }
-        if (toks.length < 2) throw new Error("Falta 'H W' (ej: '40 40').");
-        const h = Number(toks[0]);
-        const w = Number(toks[1]);
-        if (h !== 40 || w !== 40) throw new Error("Este tablero está fijo a 40×40 (entrada debe ser '40 40').");
-
-        const rest = toks.slice(2).map(Number);
-        if (rest.length === 0) throw new Error("No hay pistas para importar.");
-
-        let triples = rest;
-        if (rest.length >= 1) {
-          const maybeN = rest[0];
-          if (Number.isInteger(maybeN) && rest.length === 1 + 3 * maybeN) {
-            triples = rest.slice(1);
-          }
-        }
-
-        if (triples.length % 3 !== 0) throw new Error("Se esperaban triples: r c area (opcionalmente precedido por N).");
-
-        clues.clear();
-        for (let i = 0; i < triples.length; i += 3) {
-          const r = triples[i];
-          const c = triples[i + 1];
-          const area = triples[i + 2];
-          if (!Number.isInteger(r) || !Number.isInteger(c) || !Number.isInteger(area)) {
-            throw new Error("r, c y area deben ser enteros.");
-          }
-          if (r < 0 || r >= 40 || c < 0 || c >= 40) throw new Error(`Pista fuera del tablero: (${r}, ${c}).`);
-          if (area <= 0) throw new Error(`Área inválida en (${r}, ${c}).`);
-          const k = keyOf(r, c);
-          if (clues.has(k)) throw new Error(`Pista duplicada en (${r}, ${c}).`);
-          clues.set(k, area);
-        }
-        buildBoard();
-        setStatus(`Importado: ${clues.size} pistas.`);
-      }
-
-      // UI wiring
-      const btnSet = document.getElementById("btnSet");
-      const btnClear = document.getElementById("btnClear");
-      const btnReset = document.getElementById("btnReset");
-      const btnExport = document.getElementById("btnExport");
-      const btnImport = document.getElementById("btnImport");
-
-      btnSet?.addEventListener("click", () => {
-        try {
-          const v = Number(elClueValue.value);
-          setClueAt(selected.r, selected.c, v);
-          setStatus(`Pista puesta en (${selected.r}, ${selected.c}).`);
-        } catch (e) {
-          setStatus(String(e?.message || e), "error");
-        }
-      });
-
-      btnClear?.addEventListener("click", () => {
-        clearClueAt(selected.r, selected.c);
-        setStatus(`Pista borrada en (${selected.r}, ${selected.c}).`);
-      });
-
-      btnReset?.addEventListener("click", () => resetAll());
-
-      btnExport?.addEventListener("click", () => {
-        elIoBox.value = exportText();
-        setStatus("Exportado a la caja de texto.");
-      });
-
-      btnImport?.addEventListener("click", () => {
-        try {
-          importText(elIoBox.value);
-        } catch (e) {
-          setStatus(String(e?.message || e), "error");
-        }
-      });
-
-      elToggleCoords.addEventListener("change", () => {
-        document.body.classList.toggle("showCoords", elToggleCoords.checked);
-      });
-      elToggleBold5.addEventListener("change", () => applyBoldLines());
-
-      // Keyboard shortcuts (focus-safe)
-      window.addEventListener("keydown", (ev) => {
-        const active = document.activeElement;
-        const isTyping = active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA");
-
-        // Navegación de selección (no interfiere cuando escribes en textarea/input)
-        if (!isTyping) {
-          if (ev.key === "ArrowUp") selected.r = Math.max(0, selected.r - 1);
-          else if (ev.key === "ArrowDown") selected.r = Math.min(H - 1, selected.r + 1);
-          else if (ev.key === "ArrowLeft") selected.c = Math.max(0, selected.c - 1);
-          else if (ev.key === "ArrowRight") selected.c = Math.min(W - 1, selected.c + 1);
-          else if (ev.key === "Delete" || ev.key === "Backspace") {
-            clearClueAt(selected.r, selected.c);
-            setStatus(`Pista borrada en (${selected.r}, ${selected.c}).`);
-          } else if (ev.key === "Enter") {
-            // Enter: intenta usar el valor del input
-            try {
-              const v = Number(elClueValue.value);
-              setClueAt(selected.r, selected.c, v);
-              setStatus(`Pista puesta en (${selected.r}, ${selected.c}).`);
-            } catch (e) {
-              setStatus(String(e?.message || e), "error");
-            }
-          } else if (/^\d$/.test(ev.key)) {
-            // escribir dígitos: manda el foco al input para editar rápido
-            elClueValue.focus();
-          }
-          renderSelection();
-        }
-      });
-
-      // Inicialización
-      buildBoard();
-      document.body.classList.toggle("showCoords", false);
-    </script>
+    <script src="app.js"></script>
   </body>
 </html>
-
