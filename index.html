@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shikaku Puzzle</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <aside class="panel">
+        <h1>Shikaku Puzzle</h1>
+
+        <h2>Jugar</h2>  
+        <h3>Generar Tablero</h3>
+        <p style="margin-bottom: 12px;">Dimensiones del tablero</p>
+        
+        <input type="number" id="boardWidth" placeholder="Ancho" min="1" max="40" />
+        <input type="number" id="boardHeight" placeholder="Alto" min="1" max="40" />
+        
+        <p id="mensajeError" style="color: red; font-size: 12px; margin-top: 12px;"></p>
+
+        <button class="primary" id="btnGenerateBoard" style="margin-top: 12px;">Generar Tablero</button>
+
+        <div class="row mt" style="margin-top: 12px;">
+          <label>
+            <input id="toggleBold5" type="checkbox" checked />
+            Líneas cada 5
+          </label>
+        </div>
+
+        <button class="danger" id="btnReset" style="margin-top: 12px;">Resetear</button>
+
+        <h2>Cargar Tablero</h2>
+        <textarea id="boardData" placeholder="Datos del tablero"></textarea>
+        <button class="primary" id="btnLoadBoard" style="margin-top: 12px;">Cargar Tablero</button>
+      
+      </aside>
+
+      <main class="boardWrap">
+        <div id="board" class="board" aria-label="tablero shikaku"></div>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
