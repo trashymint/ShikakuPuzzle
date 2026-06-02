@@ -148,8 +148,6 @@ function generatePuzzle(H, W) {
 
       if (pool.length === 0) {
         // Celda completamente atrapada sin opcion de area >= 2.
-        // Fusionarla con el vecino derecho o inferior si existe y es libre,
-        // o absorberla al rectángulo de arriba/izquierda (unico caso seguro).
         if (c + 1 < W && board[r][c + 1] === -1) {
           const idx = rects.length;
           rects.push({ r1: r, c1: c, r2: r, c2: c + 1, area: 2 });
@@ -159,12 +157,18 @@ function generatePuzzle(H, W) {
           rects.push({ r1: r, c1: c, r2: r + 1, c2: c, area: 2 });
           board[r][c] = idx; board[r + 1][c] = idx;
         } else {
-          // Sin salida: absorber al rectangulo de arriba (siempre existe porque
-          // recorremos en orden y al menos la fila 0 ya fue cubierta)
-          const above = r > 0 ? board[r - 1][c] : board[r][c - 1];
-          board[r][c] = above;
-          // No modificamos rects[above] porque el area ya no importa para el solver:
-          // la pista se mueve a (r1, c1) del rectangulo original y el area se recalcula abajo.
+          // Sin salida: absorber al rectangulo de arriba (caso más común al barrer)
+          if (r > 0 && board[r - 1][c] !== -1) {
+            const aboveIdx = board[r - 1][c];
+            board[r][c] = aboveIdx;
+            // Corregir la geometraa: estirar el limite inferior del rectangulo de arriba
+            rects[aboveIdx].r2 = Math.max(rects[aboveIdx].r2, r);
+          } else if (c > 0 && board[r][c - 1] !== -1) {
+            const leftIdx = board[r][c - 1];
+            board[r][c] = leftIdx;
+            // Corregir la geometria: estirar el limite derecho del rectangulo de la izquierda
+            rects[leftIdx].c2 = Math.max(rects[leftIdx].c2, c);
+          }
         }
         continue;
       }
