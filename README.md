@@ -17,14 +17,14 @@ Aplicación web para jugar y resolver puzzles Shikaku. El tablero se divide en r
    cd ShikakuPuzzle
    ```
 
-   También podés descomprimir el proyecto en una carpeta y abrir esa carpeta.
+   También puede descomprimir el proyecto en una carpeta y abrir esa carpeta.
 
 ## Ejecución
 
 ### Opción 1: Abrir el archivo directamente
 
 1. Entrá a la carpeta del proyecto.
-2. Abrí `index.html` con doble clic o arrastrándolo al navegador.
+2. Abre `index.html` con doble clic o arrastrándolo al navegador.
 
 En la mayoría de los casos esto es suficiente.
 
@@ -32,7 +32,7 @@ En la mayoría de los casos esto es suficiente.
 
 Levantá un servidor estático en la carpeta del proyecto:
 
-**Python 3:**
+**Python 1:**
 
 ```bash
 python -m http.server 8000
@@ -44,13 +44,13 @@ python -m http.server 8000
 python -m SimpleHTTPServer 8000
 ```
 
-**Node.js (si lo tenés instalado):**
+**Node.js (si lo tiene instalado):**
 
 ```bash
 npx --yes serve .
 ```
 
-Luego abrí en el navegador: [http://localhost:8000](http://localhost:8000) (o el puerto que indique la herramienta).
+Luego abre en el navegador: [http://localhost:8000](http://localhost:8000) (o el puerto que indique la herramienta).
 
 ## Estructura del proyecto
 
