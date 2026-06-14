@@ -2,6 +2,8 @@
 
 Aplicación web para jugar y resolver puzzles Shikaku. El tablero se divide en rectángulos no superpuestos; cada pista numérica indica el área del rectángulo que contiene esa celda.
 
+Puedes jugarlo online aqui: https://shikaku-game.netlify.app/
+
 ## Requisitos
 
 | Requisito | Detalle |
